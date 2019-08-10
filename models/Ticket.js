@@ -1,7 +1,7 @@
 const mongoose = require ('mongoose');
 const Schema = mongoose.Schema;
 
-const FacturaSchema = new Schema({
+const TicketSchema = new Schema({
   estacion: Number,
   empresa: String,
   fecha: String,
@@ -12,5 +12,5 @@ const FacturaSchema = new Schema({
 })
 
 
-const factura = mongoose.model('Factura', FacturaSchema);
-module.exports = factura;
+const Ticket = mongoose.model('Ticket', TicketSchema);
+module.exports = Ticket;

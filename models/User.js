@@ -6,7 +6,7 @@ const userSchema = new Schema({
   email: {type: String, required: true},
   password: {type: String, required: true},
   datosFiscales: Object,
-  facturas: [{ type : Schema.Types.ObjectId, ref: 'Factura' }]
+  facturas: Array
 })
 
 const User = mongoose.model("User", userSchema);

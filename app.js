@@ -6,30 +6,25 @@ const cors = require('cors');
 const logger = require('morgan');
 const cookieParser = require('cookie-parser')
 const session = require('express-session');
-const MongoStore = require('connect-mongo')(session)
+const Ticket = require('./models/Ticket')
 require('dotenv/config');
 
-mongoose
-  .connect('mongodb://localhost/Project2', {useNewUrlParser: true})
-  .then(x =>{
-    console.log(`Connected to Mongo! Database name: "${x.connections[0].name}"`)
-  })
-  .catch(err=>{
-    console.error('Error connecting to Mongo', err)
-  })
-
-  //middleware to enable sessions in Express
-  // app.use(session({
-  //   secret: "auth-secret",
-  //   cookie: { maxAge: 60000 },
-  //   resave: false,
-  //   saveUninitialized: true,
-  //   store: new MongoStore({
-  //     mongooseConnection: mongoose.connection,
-  //     ttl: 24 * 60 * 60 // 1 day
-  //   })
-  // }));
-
+// mongoose
+//   .connect('mongodb://localhost/Project2', {useNewUrlParser: true})
+//   .then(x =>{
+//     console.log(`Connected to Mongo! Database name: "${x.connections[0].name}"`)
+//   })
+//   .catch(err=>{
+//     console.error('Error connecting to Mongo', err)
+//   }) 
+mongoose.connect(
+  process.env.DB_Connection,
+  {useNewUrlParser: true},
+  (err)=> {
+    if( err ) throw err
+    console.log("Connected to DB",)
+  }
+  );
   
 
   //Middlewares
@@ -40,9 +35,14 @@ mongoose
   app.use(cors());
 
 
-
-app.get('/',(req,res)=>{
-  res.send("Home Page")
+app.get('/tickets/:id',(req,res)=>{  
+  console.log("entro")
+  Ticket.find({ web_id: req.params.id })
+    .then(data =>{
+      res.send(data);
+    }).catch(err =>{
+      res.send(err)
+    }) 
 })
 
 //Import routes
